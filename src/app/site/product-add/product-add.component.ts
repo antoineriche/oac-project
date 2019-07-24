@@ -36,6 +36,15 @@ export class ProductAddComponent implements OnInit {
     this.ts.getAllTodos();
   }
 
+  saveTodo(){
+    let todo = new Todo();
+    todo.title = "Title-test";
+    todo.id = 24;
+    todo.userId = 136;
+    todo.completed = false;
+    this.ts.saveTodo(todo);
+  }
+
   ngOnInit() {
   }
 
