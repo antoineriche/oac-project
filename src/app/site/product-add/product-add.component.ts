@@ -36,6 +36,10 @@ export class ProductAddComponent implements OnInit {
     this.ts.getAllTodos();
   }
 
+  getAllFilteredTodos(){
+    this.ts.getAllFilteredTodos();
+  }
+
   saveTodo(){
     let todo = new Todo();
     todo.title = "Title-test";

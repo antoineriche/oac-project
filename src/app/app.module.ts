@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { TodosService } from './service/todos.service';
+import { SongsModule } from './site/songs/songs.module';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { TodosService } from './service/todos.service';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    SongsModule,
     HttpClientModule
   ],
   providers: [
