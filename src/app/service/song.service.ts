@@ -13,22 +13,22 @@ export class SongService {
   constructor(private http: HttpClient) { }
 
   saveSong(song:Song): Observable<Song> {
-    return this.http.post(this.uri, song);
+    return <Observable<Song>> this.http.post(this.uri, song);
   }
 
   getSongWithId(id:number): Observable<Song> {
-    return this.http.get(this.uri+id);
+    return <Observable<Song>> this.http.get(this.uri+id);
   }
 
   delete(id:number): Observable<Song> {
-    return this.http.delete(this.uri+id);
+    return <Observable<Song>> this.http.delete(this.uri+id);
   }
 
   update(id:number, song:Song): Observable<Song> {
-    return this.http.put(this.uri+id, song);
+    return <Observable<Song>> this.http.put(this.uri+id, song);
   }
 
   getAllSongs(): Observable<Song[]> {
-    return this.http.get(this.uri);
+    return <Observable<Song[]>> this.http.get(this.uri);
   }
 }
