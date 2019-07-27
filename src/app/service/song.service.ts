@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import Song from '../model/song';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable({
   providedIn: 'root'
@@ -11,25 +12,23 @@ export class SongService {
 
   constructor(private http: HttpClient) { }
 
-  saveSong(song:Song){
-    console.log("Create Song");
-    this.http.post(this.uri, song).subscribe(
-      res => { console.log(res); },
-      err => {
-        console.log("error");
-        console.log(err);
-      }
-    );
+  saveSong(song:Song): Observable<Song> {
+    return this.http.post(this.uri, song);
   }
 
-  getAllSongs() {
-    console.log("Getting all Songs");
-    this.http.get(this.uri).subscribe(
-      res => { console.log(res); },
-      err => {
-        console.log("error");
-        console.log(err);
-      }
-    );
+  getSongWithId(id:number): Observable<Song> {
+    return this.http.get(this.uri+id);
+  }
+
+  delete(id:number): Observable<Song> {
+    return this.http.delete(this.uri+id);
+  }
+
+  update(id:number, song:Song): Observable<Song> {
+    return this.http.put(this.uri+id, song);
+  }
+
+  getAllSongs(): Observable<Song[]> {
+    return this.http.get(this.uri);
   }
 }
