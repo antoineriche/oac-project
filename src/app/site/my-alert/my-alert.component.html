@@ -1,0 +1,4 @@
+<div *ngIf="!hidden" [ngClass]="'alert alert-' + alertMessage.type" role="alert">
+    <strong *ngIf="alertMessage.title">{{alertMessage.title}}</strong>
+    <p *ngIf="alertMessage.detail">{{alertMessage.detail}}</p>
+</div>

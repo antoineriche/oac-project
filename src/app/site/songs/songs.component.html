@@ -1,5 +1,10 @@
 <div>
     <div class="row">
+        <app-my-alert></app-my-alert>
+    </div>
+
+    <div class="row">
+        
         <!-- GET ALL SONGS -->
         <div class="col-2">
             <button class="btn btn-success my-3 btn-block" (click)="getAllSongs()">
@@ -13,8 +18,9 @@
                     </div>
                 </button>
             </div>
-
         </div>
+        
+        <!-- DETAIL SONG -->
         <div class="col-4 text-center">
             <div *ngIf="aSong">
                 <div class="card my-2">
@@ -30,6 +36,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- ADD SONG -->
         <div class="col-6">
             <button class="btn btn-secondary my-3 btn-block" (click)="hideForm = !hideForm">
                 Add a song

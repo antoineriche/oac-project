@@ -10,11 +10,14 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { TodosService } from './service/todos.service';
 import { SongsModule } from './site/songs/songs.module';
+import { MyAlertComponent } from './site/my-alert/my-alert.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProductAddComponent
+    ProductAddComponent,
+//    MyAlertComponent
   ],
   imports: [
     BrowserModule,

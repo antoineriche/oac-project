@@ -20,8 +20,8 @@ export class SongService {
     return <Observable<Song>> this.http.get(this.uri+id);
   }
 
-  delete(id:number): Observable<Song> {
-    return <Observable<Song>> this.http.delete(this.uri+id);
+  delete(id:number): Observable<string> {
+    return <Observable<string>> this.http.delete(this.uri+id);
   }
 
   update(id:number, song:Song): Observable<Song> {

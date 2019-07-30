@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import Song from 'src/app/model/song';
 
 import { FormGroup,  FormBuilder,  Validators } from '@angular/forms';
 import { SongService } from 'src/app/service/song.service';
-import { Observable } from 'rxjs';
+import { MyAlertComponent } from '../my-alert/my-alert.component';
+import AlertMessage from 'src/app/model/alert-message';
+import ClientError from 'src/app/model/error/client-error';
 
+const TIMEOUT: number = 3 * 1000;
 
 @Component({
   selector: 'app-songs',
@@ -13,14 +16,18 @@ import { Observable } from 'rxjs';
 })
 export class SongsComponent implements OnInit {
 
+  @ViewChild(MyAlertComponent, {static: false})   myAlert:   MyAlertComponent;
+
   song: Song;
   aSong: Song;
   listSongs: Song[];
   songParts: number[];
   songForm: FormGroup;
   hideForm: Boolean;
+  alertMessage: AlertMessage;
 
-  constructor(private fb: FormBuilder, 
+  constructor(
+    private fb: FormBuilder, 
     private sS: SongService) { }
 
   ngOnInit() {
@@ -28,11 +35,13 @@ export class SongsComponent implements OnInit {
     this.songParts = [];
     this.listSongs = [];
     this.hideForm = true;
+    this.alertMessage = new AlertMessage();
+    this.alertMessage.timeout = TIMEOUT;
   }
 
   createForm() {
     this.songForm = this.fb.group({
-      songTitle: ['', Validators.required ]
+      songTitle: ['', Validators.required]
     });
   }
 
@@ -48,23 +57,25 @@ export class SongsComponent implements OnInit {
   getAllSongs(){
     this.sS.getAllSongs().subscribe(
       (data: Song[]) => { this.listSongs = data },
-      err => { console.log(err) }
+      err => { this.myAlert.showError(this.convertToClientError(err), TIMEOUT) }
     );
   }
 
   viewSong(id:number){
     this.sS.getSongWithId(id).subscribe(
       (data: Song) => { this.aSong = data },
-      err => { console.log(err) }
+      err => { this.myAlert.showError(this.convertToClientError(err), TIMEOUT) }
     );
   }
 
   deleteSong(id:number) {
     this.sS.delete(id).subscribe(
-      (data: Song) => { 
+      (data: string) => { 
         this.aSong = null;
-        this.getAllSongs(); },
-      err => { console.log(err) }
+        this.getAllSongs();
+        this.myAlert.showSuccess("Song has been deleted", null, TIMEOUT);
+       },
+      err => { this.myAlert.showError(this.convertToClientError(err), TIMEOUT) }
     ); 
   }
 
@@ -75,11 +86,11 @@ export class SongsComponent implements OnInit {
         (data: Song) => { 
           this.aSong = data;
           this.getAllSongs();
+          this.myAlert.showSuccess("Song has been updated", null, TIMEOUT);
         },
-        err => { console.log(err) }
+        err => { this.myAlert.showError(this.convertToClientError(err), TIMEOUT) }
       );
     }
-    
   }
 
   saveSong() {
@@ -89,13 +100,21 @@ export class SongsComponent implements OnInit {
       (data: Song) => {
         this.hideForm = true;
         this.getAllSongs();
+        this.myAlert.showSuccess("Song has been saved", null, TIMEOUT);
       },
-      err => { console.log(err) }
+      err => { this.myAlert.showError(this.convertToClientError(err), TIMEOUT) }
     );
   }
 
   resetForm() {
     this.songForm.value.songTitle = "";
   }
+
+  convertToClientError(apiError: any): ClientError {
+    let error = new ClientError();
+    error.cause = apiError.error.error.message;
+    error.detail = apiError.error.error.stack;
+    return error;
+    };
 
 }
