@@ -48,6 +48,7 @@ export class MyAlertComponent implements OnInit {
     if(this.timeoutCallback){
       clearTimeout(this.timeoutCallback);
     }
+    
     this.timeoutCallback = setTimeout(() => { 
        this.hidden = true;
        this.timeoutCallback = null;
